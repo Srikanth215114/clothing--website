@@ -1,0 +1,1290 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lit-up | Anime Streetwear</title>
+    <link rel="stylesheet" href="./src/css/main.css">
+    <link rel="stylesheet" href="./src/css/enhancements.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/svg+xml" href="./images/header/favicon.svg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Smooch&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* INDEX PAGE  */
+
+        :root {
+            --gold: #dcb964;
+            --gold-dim: rgba(220, 185, 100, 0.12);
+            --dark: #0f0f11;
+            --dark-card: #16161a;
+            --dark-mid: #1e1e24;
+            --text: #f0ece4;
+            --muted: #6a6560;
+            --radius: 16px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--dark);
+            font-family: 'Montserrat', 'Lucida Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            background: rgba(15, 15, 17, 0.96) !important;
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(220, 185, 100, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        /* ================================================================
+       HERO SWIPER SECTION
+    ================================================================ */
+        .home {
+            background: var(--dark);
+            /* CRITICAL: clip horizontal overflow at THIS level only */
+            overflow: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Radial spotlight behind center */
+        .home::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(ellipse,
+                    rgba(220, 185, 100, 0.07) 0%,
+                    rgba(220, 185, 100, 0.02) 45%,
+                    transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .home__container {
+            padding: 7rem 0 5rem;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .home__content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Decorative rings */
+        .home__circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -54%);
+            width: 480px;
+            height: 480px;
+            border: 1px solid rgba(220, 185, 100, 0.12);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .home__subcircle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 340px;
+            height: 340px;
+            border: 1px solid rgba(220, 185, 100, 0.06);
+            border-radius: 50%;
+        }
+
+        /* Ghost title */
+        .home__title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -40%);
+            font-family: 'Smooch', cursive;
+            font-size: 7rem;
+            font-weight: 400;
+            color: var(--gold);
+            opacity: 0.10;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 2;
+            letter-spacing: 6px;
+        }
+
+        /* SWIPER — must be overflow:visible so side slides show */
+        .home__swiper {
+            width: 100%;
+            overflow: visible !important;
+            /* ← THE KEY FIX */
+            z-index: 3;
+            padding-bottom: 80px;
+        }
+
+        /* All slides */
+        .home__article {
+            text-align: center;
+            opacity: 0.3;
+            transform: scale(0.62);
+            transition: transform 0.5s cubic-bezier(.4, 0, .2, 1),
+                opacity 0.5s cubic-bezier(.4, 0, .2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            will-change: transform, opacity;
+        }
+
+        /* Active center */
+        .home__article.swiper-slide-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Neighbors */
+        .home__article.swiper-slide-prev,
+        .home__article.swiper-slide-next {
+            opacity: 0.52;
+            transform: scale(0.62);
+        }
+
+        /* Images */
+        .home__img {
+            width: 200px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.8));
+            margin: 0 auto 0.8rem;
+            transition: width 0.5s ease, filter 0.5s ease;
+            display: block;
+        }
+
+        .swiper-slide-active .home__img {
+            width: 320px;
+            filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 50px rgba(220, 185, 100, 0.08));
+        }
+
+        /* Name / Price — fade in only on active */
+        .home__product {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.12s;
+            text-transform: capitalize;
+            letter-spacing: 0.5px;
+        }
+
+        .home__price {
+            font-size: 0.9rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.18s;
+        }
+
+        .swiper-slide-active .home__product,
+        .swiper-slide-active .home__price {
+            opacity: 1;
+        }
+
+        /* Add to cart pill */
+        .home__add-btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--gold);
+            border: 1.5px solid var(--gold);
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.22s, color 0.22s, transform 0.18s;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        .home__add-btn:hover {
+            background: var(--gold);
+            color: var(--dark);
+            transform: scale(1.06);
+        }
+
+        .home__article:not(.swiper-slide-active) .home__add-btn {
+            padding: 5px 14px;
+            font-size: 0.65rem;
+            opacity: 0.7;
+        }
+
+        /* Nav arrows — small circles, bottom-center */
+        .swiper-button-prev,
+        .swiper-button-next {
+            top: auto !important;
+            bottom: 16px;
+            width: 46px;
+            height: 46px;
+            border: 1px solid rgba(220, 185, 100, 0.3);
+            border-radius: 50%;
+            background: rgba(220, 185, 100, 0.05);
+            color: var(--gold) !important;
+            font-size: 1.1rem;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .swiper-button-prev:hover,
+        .swiper-button-next:hover {
+            background: rgba(220, 185, 100, 0.14);
+            border-color: var(--gold);
+        }
+
+        .swiper-button-prev {
+            left: calc(50% - 60px) !important;
+        }
+
+        .swiper-button-next {
+            right: calc(50% - 60px) !important;
+        }
+
+        .swiper-button-prev::after,
+        .swiper-button-next::after {
+            font-size: 1rem !important;
+            color: var(--gold);
+        }
+
+        /* strip btw hero */
+        .marquee-strip {
+            background: var(--gold);
+            padding: 12px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-track {
+            display: inline-flex;
+            gap: 0;
+            animation: marquee 22s linear infinite;
+        }
+
+        .marquee-item {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--dark);
+            padding: 0 40px;
+        }
+
+        .marquee-item::before {
+            content: '✦';
+            margin-right: 40px;
+            opacity: 0.5;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /*oromo banner*/
+        .promo-section {
+            padding: 60px 0;
+        }
+
+        .promo-card {
+            max-width: 1300px;
+            margin: 0 auto 40px;
+            padding: 0 32px;
+            background: var(--dark-card);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .promo-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 80% 50%,
+                    rgba(220, 185, 100, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .promo-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .promo-img-wrap {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0 0 0 20px;
+            min-height: 320px;
+        }
+
+        .promo-img-wrap img {
+            max-height: 340px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(-8px 0 40px rgba(0, 0, 0, 0.6));
+            transition: transform 0.5s ease;
+        }
+
+        .promo-card:hover .promo-img-wrap img {
+            transform: translateY(-8px) scale(1.03);
+        }
+
+        .promo-text {
+            padding: 48px 48px 48px 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .promo-eyebrow {
+            display: inline-block;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(220, 185, 100, 0.3);
+            border-radius: 20px;
+            padding: 4px 14px;
+            margin-bottom: 20px;
+        }
+
+        .promo-title {
+            font-size: clamp(28px, 4vw, 46px);
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1.1;
+            margin: 0 0 16px;
+            text-transform: capitalize;
+        }
+
+        .promo-desc {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 32px;
+            max-width: 360px;
+        }
+
+        .promo-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--gold);
+            color: var(--dark);
+            padding: 13px 30px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background 0.22s, transform 0.2s, box-shadow 0.22s;
+        }
+
+        .promo-btn:hover {
+            background: #e8cc78;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(220, 185, 100, 0.25);
+            text-decoration: none;
+        }
+
+        /*product grid section */
+        .section {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 32px 60px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 36px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text);
+            white-space: nowrap;
+            margin: 0;
+            text-align: left;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, rgba(220, 185, 100, 0.25), transparent);
+        }
+
+        .section-link {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: opacity 0.2s;
+        }
+
+        .section-link:hover {
+            opacity: 0.75;
+            text-decoration: none;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 1000px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 520px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .prod-card {
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: transform 0.35s, border-color 0.3s, box-shadow 0.35s;
+            text-decoration: none;
+            display: block;
+            position: relative;
+        }
+
+        .prod-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(220, 185, 100, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            text-decoration: none;
+        }
+
+        .prod-card-img {
+            aspect-ratio: 1;
+            overflow: hidden;
+            background: var(--dark-mid);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .prod-card-img img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+            transition: transform 0.45s ease;
+        }
+
+        .prod-card:hover .prod-card-img img {
+            transform: scale(1.08);
+        }
+
+        .prod-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 15, 17, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .prod-card:hover .prod-card-overlay {
+            opacity: 1;
+        }
+
+        .prod-card-quick {
+            background: var(--gold);
+            color: var(--dark);
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transform: translateY(8px);
+            transition: transform 0.3s;
+            text-decoration: none;
+        }
+
+        .prod-card:hover .prod-card-quick {
+            transform: translateY(0);
+        }
+
+        .prod-card-info {
+            padding: 14px 16px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .prod-card-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #c0bbb4;
+            text-transform: capitalize;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .prod-card-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        /* "See More" button */
+        .see-more-wrap {
+            text-align: center;
+            padding: 10px 0 60px;
+        }
+
+        .see-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: var(--gold);
+            border: 1.5px solid rgba(220, 185, 100, 0.35);
+            padding: 12px 36px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background 0.22s, border-color 0.22s, transform 0.2s;
+        }
+
+        .see-more-btn:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        /* TESTIMONIALS */
+        .testimonials-section {
+            background: var(--dark-card);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 70px 32px;
+        }
+
+        .testimonials-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .testimonials-label {
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        .testimonials-heading {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 0 0 48px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .test-card {
+            background: var(--dark-mid);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: border-color 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        .test-card:hover {
+            border-color: rgba(220, 185, 100, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .test-quote {
+            font-size: 32px;
+            color: var(--gold);
+            opacity: 0.35;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .test-text {
+            font-size: 14px;
+            color: #8a8580;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .test-person {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 20px;
+        }
+
+        .test-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(220, 185, 100, 0.2);
+        }
+
+        .test-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .test-stars {
+            color: var(--gold);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #0a0a0c !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .home__title {
+                font-size: 4rem;
+            }
+
+            .home__circle {
+                width: 300px;
+                height: 300px;
+            }
+
+            .section {
+                padding: 20px 20px 50px;
+            }
+
+            .promo-text {
+                padding: 32px 24px;
+            }
+        }
+        @media (max-width: 900px) {
+            .home__title {
+                font-size: 5.1rem;
+            }
+
+            .section,
+            .testimonials-section {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .home {
+                min-height: auto;
+            }
+
+            .home__container {
+                padding: 5.5rem 0 3.5rem;
+            }
+
+            .home__circle {
+                width: 300px;
+                height: 300px;
+            }
+
+            .home__subcircle {
+                width: 220px;
+                height: 220px;
+            }
+
+            .home__title {
+                font-size: 3.6rem;
+                letter-spacing: 3px;
+                transform: translate(-50%, -55%);
+            }
+
+            .home__img,
+            .swiper-slide-active .home__img {
+                width: min(72vw, 280px);
+            }
+
+            .home__swiper {
+                padding-bottom: 70px;
+            }
+
+            .swiper-button-prev,
+            .swiper-button-next {
+                width: 40px;
+                height: 40px;
+                bottom: 8px;
+            }
+
+            .swiper-button-prev {
+                left: calc(50% - 52px) !important;
+            }
+
+            .swiper-button-next {
+                right: calc(50% - 52px) !important;
+            }
+
+            .marquee-item {
+                padding: 0 24px;
+                font-size: 11px;
+            }
+
+            .promo-section {
+                padding: 34px 0;
+            }
+
+            .promo-card {
+                padding: 0 18px;
+                border-radius: 22px;
+            }
+
+            .promo-img-wrap {
+                min-height: 240px;
+                padding: 18px 0 0;
+            }
+
+            .promo-img-wrap img {
+                max-height: 250px;
+            }
+
+            .promo-text,
+            .promo-card[style] .promo-text {
+                padding: 28px 6px 28px !important;
+            }
+
+            .promo-desc {
+                max-width: none;
+            }
+
+            .section {
+                padding: 10px 20px 42px;
+            }
+
+            .section-header {
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            .section-title,
+            .section-link {
+                width: 100%;
+            }
+
+            .section-line {
+                display: none;
+            }
+
+            .product-grid {
+                gap: 16px;
+            }
+
+            .prod-card-info {
+                padding: 12px 14px 14px;
+            }
+
+            .testimonials-section {
+                padding: 48px 20px;
+            }
+
+            .testimonials-heading {
+                font-size: 22px;
+                margin-bottom: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <!-- ── HEADER ── -->
+    <div class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <a href="./index.html"><img src="./images/header/complogo.png" alt="lit-up" width="225px"></a>
+                </div>
+                <nav aria-label="Primary navigation">
+                    <ul class="nav-menu">
+                        <li class="nav-item"><a href="index.html">Home</a></li>
+                        <li class="nav-item"><a href="products.html">Products</a></li>
+                        <li class="nav-item"><a href="#footer">Contact Us</a></li>
+                        <li class="nav-item"><a href="account.html">Account</a></li>
+                    </ul>
+                </nav>
+                <a href="./cart.html" aria-label="Shopping cart"><img class="cart" src="./images/header/cart.svg" alt="Cart"></a>
+                <button type="button" class="toggle" aria-label="Toggle navigation menu"><i class="fa fa-bars" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── HERO SWIPER ── -->
+    <main id="main-content">
+    <section class="home" aria-label="Featured products">
+        <div class="home__container">
+            <div class="home__content">
+                <div class="home__circle">
+                    <div class="home__subcircle"></div>
+                    <h1 class="home__title">clothings</h1>
+                </div>
+                <div class="home__swiper swiper">
+                    <div class="swiper-wrapper">
+                        <article class="home__article swiper-slide">
+                            <img src="./images/slider/gojo.png" alt="satoru gojo" class="home__img" />
+                            <h2 class="home__product">satoru gojo</h2>
+                            <h3 class="home__price">&#8377;799</h3>
+                            <button class="home__add-btn" data-id="1" data-product="satoru gojo" data-price="799">Add to
+                                cart</button>
+                        </article>
+                        <article class="home__article swiper-slide">
+                            <img src="./images/slider/luffy.png" alt="monkey d luffy" class="home__img" />
+                            <h2 class="home__product">monkey d luffy</h2>
+                            <h3 class="home__price">&#8377;799</h3>
+                            <button class="home__add-btn" data-id="2" data-product="monkey d luffy" data-price="799">Add to
+                                cart</button>
+                        </article>
+                        <article class="home__article swiper-slide">
+                            <img src="./images/slider/naruto.png" alt="vegeta ultra ego" class="home__img" />
+                            <h2 class="home__product">vegeta ultra ego</h2>
+                            <h3 class="home__price">&#8377;799</h3>
+                            <button class="home__add-btn" data-id="3" data-product="vegeta ultra ego" data-price="799">Add to
+                                cart</button>
+                        </article>
+                        <article class="home__article swiper-slide">
+                            <img src="./images/slider/naruto.png" alt="naruto uzumaki" class="home__img" />
+                            <h2 class="home__product">naruto uzumaki</h2>
+                            <h3 class="home__price">&#8377;799</h3>
+                            <button class="home__add-btn" data-id="4" data-product="naruto uzumaki" data-price="799">Add to
+                                cart</button>
+                        </article>
+                        <article class="home__article swiper-slide">
+                            <img src="./images/slider/luffy.png" alt="kakashi hatake" class="home__img" />
+                            <h2 class="home__product">kakashi hatake</h2>
+                            <h3 class="home__price">&#8377;799</h3>
+                            <button class="home__add-btn" data-id="5" data-product="kakashi hatake" data-price="799">Add to
+                                cart</button>
+                        </article>
+                        <article class="home__article swiper-slide">
+                            <img src="./images/slider/gojo.png" alt="gojo satoru" class="home__img" />
+                            <h2 class="home__product">gojo satoru</h2>
+                            <h3 class="home__price">&#8377;799</h3>
+                            <button class="home__add-btn" data-id="6" data-product="gojo satoru" data-price="799">Add to
+                                cart</button>
+                        </article>
+                    </div>
+                </div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── MARQUEE STRIP ── -->
+    <div class="marquee-strip">
+        <div class="marquee-track">
+            <span class="marquee-item">Free Shipping Over ₹999</span>
+            <span class="marquee-item">Anime Streetwear</span>
+            <span class="marquee-item">Premium Cotton</span>
+            <span class="marquee-item">Limited Drops</span>
+            <span class="marquee-item">New Arrivals Weekly</span>
+            <span class="marquee-item">Free Shipping Over ₹999</span>
+            <span class="marquee-item">Anime Streetwear</span>
+            <span class="marquee-item">Premium Cotton</span>
+            <span class="marquee-item">Limited Drops</span>
+            <span class="marquee-item">New Arrivals Weekly</span>
+        </div>
+    </div>
+
+    <!-- ── PROMO BANNER 1 ── -->
+    <section class="promo-section">
+        <div class="promo-shell">
+            <div class="promo-card">
+                <div class="promo-img-wrap">
+                    <img src="./images/promos/exclusive.png" alt="sukuna tshirt">
+                </div>
+                <div class="promo-text">
+                    <span class="promo-eyebrow">&#9670; Exclusive Drop</span>
+                    <h2 class="promo-title">Sukuna<br>T-Shirt</h2>
+                    <p class="promo-desc">Know your limits and push beyond them. Our most requested design — exclusively
+                        available here.</p>
+                    <a href="./product_details.html?id=13" class="promo-btn">Shop Now &#8594;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── HOT RELEASES ── -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Hot Releases</h2>
+            <div class="section-line"></div>
+            <a href="./products.html" class="section-link">View All &#8594;</a>
+        </div>
+        <div class="product-grid">
+            <a class="prod-card" href="./product_details.html?id=1">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-1.webp" alt="satoru gojo">
+                    <div class="prod-card-overlay">
+                        <span class="prod-card-quick">Quick View</span>
+                    </div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">satoru gojo</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="prod-card" href="./product_details.html?id=2">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-2.webp" alt="monkey d luffy">
+                    <div class="prod-card-overlay">
+                        <span class="prod-card-quick">Quick View</span>
+                    </div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">monkey d luffy</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="prod-card" href="./product_details.html?id=3">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-3.webp" alt="vegeta ultra ego">
+                    <div class="prod-card-overlay">
+                        <span class="prod-card-quick">Quick View</span>
+                    </div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">vegeta ultra ego</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="prod-card" href="./product_details.html?id=4">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-4.webp" alt="naruto uzumaki">
+                    <div class="prod-card-overlay">
+                        <span class="prod-card-quick">Quick View</span>
+                    </div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">naruto uzumaki</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ── PROMO BANNER 2 ── -->
+    <section class="promo-section promo-section-tight">
+        <div class="promo-shell">
+            <div class="promo-card promo-card-reverse">
+                <div class="promo-img-wrap">
+                    <img src="./images/promos/exclusive2.png" alt="gojo tshirt">
+                </div>
+                <div class="promo-text promo-text-shift">
+                    <span class="promo-eyebrow">&#9670; Fan Favourite</span>
+                    <h2 class="promo-title">Gojo<br>T-Shirt</h2>
+                    <p class="promo-desc">Throughout the heaven and earth, I alone am the honored one. Wear your power.
+                    </p>
+                    <a href="./product_details.html?id=6" class="promo-btn">Shop Now &#8594;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── LATEST RELEASES ── -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Latest Releases</h2>
+            <div class="section-line"></div>
+            <a href="./products.html" class="section-link">View All &#8594;</a>
+        </div>
+        <div class="product-grid">
+            <a class="prod-card" href="./product_details.html?id=5">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-5.webp" alt="kakashi hatake">
+                    <div class="prod-card-overlay"><span class="prod-card-quick">Quick View</span></div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">kakashi hatake</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="prod-card" href="./product_details.html?id=6">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-6.webp" alt="gojo satoru">
+                    <div class="prod-card-overlay"><span class="prod-card-quick">Quick View</span></div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">gojo satoru</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="prod-card" href="./product_details.html?id=10">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-10.webp" alt="itachi uchiha">
+                    <div class="prod-card-overlay"><span class="prod-card-quick">Quick View</span></div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">itachi uchiha</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="prod-card" href="./product_details.html?id=14">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-14.webp" alt="zenitsu">
+                    <div class="prod-card-overlay"><span class="prod-card-quick">Quick View</span></div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">zenitsu</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="prod-card" href="./product_details.html?id=11">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-11.webp" alt="meliodas">
+                    <div class="prod-card-overlay"><span class="prod-card-quick">Quick View</span></div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">meliodas</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="prod-card" href="./product_details.html?id=15">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-15.webp" alt="sung jin woo">
+                    <div class="prod-card-overlay"><span class="prod-card-quick">Quick View</span></div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">sung jin woo</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="prod-card" href="./product_details.html?id=12">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-12.webp" alt="vegeta">
+                    <div class="prod-card-overlay"><span class="prod-card-quick">Quick View</span></div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">vegeta</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="prod-card" href="./product_details.html?id=16">
+                <div class="prod-card-img">
+                    <img src="./images/products/product-16.webp" alt="satoru gojo">
+                    <div class="prod-card-overlay"><span class="prod-card-quick">Quick View</span></div>
+                </div>
+                <div class="prod-card-info">
+                    <div class="prod-card-name">satoru gojo</div>
+                    <div class="prod-card-price">&#8377;799</div>
+                </div>
+            </a>
+        </div>
+        <div class="see-more-wrap">
+            <a href="./products.html" class="see-more-btn">Browse All Products &#8594;</a>
+        </div>
+    </section>
+
+    <!-- ── TESTIMONIALS ── -->
+    <section class="testimonials-section">
+        <div class="testimonials-inner">
+            <p class="testimonials-label">&#9670; Happy Customers</p>
+            <h2 class="testimonials-heading">What People Are Saying</h2>
+            <div class="testimonials-grid">
+                <div class="test-card">
+                    <div class="test-quote">&#8220;</div>
+                    <p class="test-text">Absolutely loved the fine hoodies I bought from this place. 11/10 would buy
+                        from here again. Shipping was super fast too.</p>
+                    <div class="test-person">
+                        <img class="test-avatar" src="./images/testimonials/jemma.jpg" alt="Jemma Stone">
+                        <div>
+                            <div class="test-name">Jemma Stone</div>
+                            <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-card">
+                    <div class="test-quote">&#8220;</div>
+                    <p class="test-text">The quality feels premium and the prints still look sharp after multiple washes. Shipping was quick and the fit matched the size guide.</p>
+                    <div class="test-person">
+                        <img class="test-avatar" src="./images/testimonials/rachel.jpg" alt="Rachel Myers">
+                        <div>
+                            <div class="test-name">Rachel Myers</div>
+                            <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-card">
+                    <div class="test-quote">&#8220;</div>
+                    <p class="test-text">No wonder this site is so popular! Best prices in the city and I really love
+                        the styles. The prints don't fade even after multiple washes.</p>
+                    <div class="test-person">
+                        <img class="test-avatar" src="./images/testimonials/anne.jpg" alt="Anne Jordan">
+                        <div>
+                            <div class="test-name">Anne Jordan</div>
+                            <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    </main>
+
+    <div class="footer" id="footer">
+        <div class="container">
+            <div class="child">
+                <div class="footerChild1">
+                    <img src="images/header/complogo.png" alt="Company logo">
+                    <h4>Mail us at: <a href="mailto:litupclothing07@gmail.com">litupclothing07@gmail.com</a></h4>
+                </div>
+                <div class="footerChild2">
+                    <h3>Help</h3>
+                    <ul>
+                        <li><a href="#">Payments</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">FAQ Topics</a></li>
+                    </ul>
+                </div>
+                <div class="footerChild2">
+                    <h3>Our Socials</h3>
+                    <ul>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+                <div class="footerChild2">
+                    <h3>Registered Office</h3>
+                    <ul>
+                        <li>37/50 manthoppu second street,</li>
+                        <li>karumandapam,</li>
+                        <li>trichy, 620001.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="belowfooter">
+                &copy; lit-up Associates, 2026<br>
+                lit-up, All rights reserved.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="./src/js/script.js"></script>
+        <script>
+        if (typeof ScrollReveal !== 'undefined') {
+            ScrollReveal().reveal('.prod-card', { delay: 80, distance: '24px', origin: 'bottom', interval: 80 });
+            ScrollReveal().reveal('.test-card', { delay: 100, distance: '20px', origin: 'bottom', interval: 100 });
+            ScrollReveal().reveal('.promo-card', { delay: 120, distance: '30px', origin: 'bottom' });
+        }
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+

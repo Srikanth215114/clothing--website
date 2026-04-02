@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lit-up | Product</title>
+    <link rel="stylesheet" href="./src/css/main.css">
+    <link rel="stylesheet" href="./src/css/enhancements.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/svg+xml" href="./images/header/favicon.svg">
+    <style>
+        /* ── Product Details Page ── Dark Editorial Layout ── */
+
+        body { background: #0f0f11; }
+
+        /* ── Header ── */
+        .header { background: rgba(15,15,17,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(220,185,100,0.10); }
+
+        /* ── Breadcrumb ── */
+        .pd-breadcrumb {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 32px 0;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #5a5650;
+        }
+        .pd-breadcrumb a { color: #5a5650; text-decoration: none; transition: color 0.2s; }
+        .pd-breadcrumb a:hover { color: #dcb964; }
+        .pd-breadcrumb span { color: #dcb964; margin: 0 8px; }
+
+        /* ── Main grid ── */
+        .pd-grid {
+            max-width: 1300px;
+            margin: 32px auto 80px;
+            padding: 0 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: start;
+        }
+        @media (max-width: 900px) {
+            .pd-grid { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        /* ── Left: Image panel ── */
+        .pd-image-panel { position: sticky; top: 100px; }
+
+        .pd-main-img-wrap {
+            position: relative;
+            background: #16161a;
+            border-radius: 24px;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Subtle gold glow behind image */
+        .pd-main-img-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 60% 30%, rgba(220,185,100,0.07), transparent 70%);
+            z-index: 0;
+        }
+
+        .pd-main-img-wrap img {
+            width: 80%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.5s ease;
+            filter: drop-shadow(0 24px 48px rgba(0,0,0,0.8));
+        }
+        .pd-main-img-wrap:hover img { transform: scale(1.04) translateY(-6px); }
+
+        /* Thumbnail row */
+        .pd-thumbs {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .pd-thumb {
+            flex: 1;
+            aspect-ratio: 1;
+            background: #16161a;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            transition: border-color 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pd-thumb img { width: 85%; object-fit: contain; }
+        .pd-thumb:hover, .pd-thumb.active { border-color: #dcb964; transform: translateY(-2px); }
+
+        /* ── Right: Info panel ── */
+        .pd-info { padding-top: 8px; }
+
+        .pd-tag {
+            display: inline-block;
+            font-size: 10px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #dcb964;
+            border: 1px solid rgba(220,185,100,0.3);
+            border-radius: 20px;
+            padding: 4px 14px;
+            margin-bottom: 18px;
+        }
+
+        .pd-title {
+            font-family: 'Lucida Sans', sans-serif;
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 700;
+            color: #f0ece4;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            text-transform: capitalize;
+        }
+
+        /* Star rating */
+        .pd-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .pd-stars { color: #dcb964; font-size: 14px; letter-spacing: 2px; }
+        .pd-rating-text { color: #5a5650; font-size: 13px; }
+
+        /* Price */
+        .pd-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .pd-price {
+            font-size: 36px;
+            font-weight: 700;
+            color: #dcb964;
+        }
+        .pd-price-original {
+            font-size: 18px;
+            color: #3a3830;
+            text-decoration: line-through;
+        }
+        .pd-badge {
+            background: rgba(220,185,100,0.12);
+            color: #dcb964;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        /* Description */
+        .pd-desc {
+            color: #7a7570;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 28px;
+        }
+
+        /* Size selector */
+        .pd-section-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #5a5650;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .pd-sizes {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+        .pd-size-btn {
+            width: 48px;
+            height: 48px;
+            border: 1.5px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            background: transparent;
+            color: #8a8580;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pd-size-btn:hover { border-color: #dcb964; color: #dcb964; }
+        .pd-size-btn.selected {
+            border-color: #dcb964;
+            background: rgba(220,185,100,0.12);
+            color: #dcb964;
+        }
+
+        /* Qty + Add to cart row */
+        .pd-action-row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .pd-qty {
+            display: flex;
+            align-items: center;
+            background: #16161a;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .pd-qty button {
+            width: 42px;
+            height: 52px;
+            background: none;
+            border: none;
+            color: #f0ece4;
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .pd-qty button:hover { color: #dcb964; }
+        .pd-qty input {
+            width: 48px;
+            height: 52px;
+            background: none;
+            border: none;
+            text-align: center;
+            color: #f0ece4 !important;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .pd-add-btn {
+            flex: 1;
+            height: 52px;
+            background: #dcb964;
+            color: #0f0f11;
+            border: none;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+            font-family: 'Lucida Sans', sans-serif;
+        }
+        .pd-add-btn:hover {
+            background: #e8cc78;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(220,185,100,0.25);
+        }
+        .pd-add-btn:active { transform: translateY(0); }
+
+        .pd-wishlist-btn {
+            width: 52px;
+            height: 52px;
+            background: #16161a;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: #5a5650;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .pd-wishlist-btn:hover { border-color: #e8504a; color: #e8504a; }
+
+        /* Shipping info strip */
+        .pd-meta-strip {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background: #16161a;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .pd-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 120px;
+        }
+        .pd-meta-icon { color: #dcb964; font-size: 16px; }
+        .pd-meta-text { font-size: 12px; color: #7a7570; line-height: 1.4; }
+        .pd-meta-text strong { display: block; color: #c0bbb4; font-size: 13px; }
+
+        /* Details accordion */
+        .pd-accordion {
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .pd-accordion-item {
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .pd-accordion-header {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #c0bbb4;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 18px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            text-align: left;
+            transition: color 0.2s;
+            font-family: 'Lucida Sans', sans-serif;
+        }
+        .pd-accordion-header:hover { color: #dcb964; }
+        .pd-accordion-header .acc-icon {
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+        .pd-accordion-header.open .acc-icon { transform: rotate(45deg); color: #dcb964; }
+        .pd-accordion-body {
+            display: none;
+            color: #7a7570;
+            font-size: 13px;
+            line-height: 1.9;
+            padding-bottom: 18px;
+        }
+        .pd-accordion-body.open { display: block; }
+
+        /* ── Related Products ── */
+        .pd-related {
+            max-width: 1300px;
+            margin: 0 auto 80px;
+            padding: 0 32px;
+        }
+        .pd-related-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        .pd-related-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f0ece4;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            text-align: left;
+        }
+        .pd-related-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, rgba(220,185,100,0.3), transparent);
+        }
+        .pd-related-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        @media (max-width: 900px) { .pd-related-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .pd-related-grid { grid-template-columns: 1fr; } }
+
+        .pd-rel-card {
+            background: #16161a;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: transform 0.3s, border-color 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .pd-rel-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(220,185,100,0.2);
+            text-decoration: none;
+        }
+        .pd-rel-card-img {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1e;
+            padding: 20px;
+        }
+        .pd-rel-card-img img { width: 100%; height: 100%; object-fit: contain; }
+        .pd-rel-card-info {
+            padding: 14px 16px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .pd-rel-card-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #c0bbb4;
+            text-transform: capitalize;
+            margin-bottom: 4px;
+        }
+        .pd-rel-card-price {
+            font-size: 14px;
+            font-weight: 700;
+            color: #dcb964;
+        }
+
+        /* Footer tweak for dark theme */
+        .footer { background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.04); }
+        @media (max-width: 900px) {
+            .pd-image-panel {
+                position: static;
+            }
+
+            .pd-meta-item {
+                min-width: calc(50% - 10px);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .pd-breadcrumb,
+            .pd-grid,
+            .pd-related {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .pd-breadcrumb {
+                padding-top: 16px;
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .pd-grid {
+                margin: 22px auto 56px;
+                gap: 28px;
+            }
+
+            .pd-main-img-wrap {
+                border-radius: 20px;
+            }
+
+            .pd-thumbs {
+                gap: 8px;
+            }
+
+            .pd-title {
+                font-size: 2rem;
+            }
+
+            .pd-rating,
+            .pd-price-row,
+            .pd-action-row,
+            .pd-related-header {
+                flex-wrap: wrap;
+            }
+
+            .pd-price-row {
+                gap: 10px;
+            }
+
+            .pd-action-row {
+                align-items: stretch;
+            }
+
+            .pd-qty,
+            .pd-add-btn,
+            .pd-wishlist-btn {
+                width: 100%;
+            }
+
+            .pd-wishlist-btn {
+                height: 50px;
+            }
+
+            .pd-meta-strip {
+                gap: 14px;
+                padding: 16px;
+            }
+
+            .pd-meta-item {
+                min-width: 100%;
+            }
+
+            .pd-related-header {
+                gap: 10px;
+            }
+
+            .pd-related-line {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <a href="./index.html"><img src="./images/header/complogo.png" alt="lit-up" width="225px"></a>
+                </div>
+                <nav aria-label="Primary navigation">
+                    <ul class="nav-menu">
+                        <li class="nav-item"><a href="index.html">Home</a></li>
+                        <li class="nav-item"><a href="products.html">Products</a></li>
+                        <li class="nav-item"><a href="#footer">Contact Us</a></li>
+                        <li class="nav-item"><a href="account.html">Account</a></li>
+                    </ul>
+                </nav>
+                <a href="./cart.html" aria-label="Shopping cart"><img class="cart" src="./images/header/cart.svg" alt="Cart"></a>
+                <button type="button" class="toggle" aria-label="Toggle navigation menu"><i class="fa fa-bars" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <main id="main-content">
+    <!-- Breadcrumb -->
+    <div class="pd-breadcrumb">
+        <a href="./index.html">Home</a>
+        <span>›</span>
+        <a href="./products.html">Products</a>
+        <span>›</span>
+        <span class="breadcrumb-current" id="breadcrumbName" aria-current="page">T-Shirt</span>
+    </div>
+
+    <!-- Main product grid -->
+    <div class="pd-grid">
+
+        <!-- LEFT: Images -->
+        <div class="pd-image-panel">
+            <div class="pd-main-img-wrap">
+                <img src="./images/products/product-5.webp" id="prodImg" alt="kakashi hatake">
+            </div>
+            <div class="pd-thumbs" id="thumbsRow">
+                <div class="pd-thumb active">
+                    <img src="./images/products/product-5.webp" alt="thumb">
+                </div>
+                <div class="pd-thumb">
+                    <img src="./images/products/product-1.webp" alt="thumb">
+                </div>
+                <div class="pd-thumb">
+                    <img src="./images/products/product-3.webp" alt="thumb">
+                </div>
+                <div class="pd-thumb">
+                    <img src="./images/products/product-6.webp" alt="thumb">
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Info -->
+        <div class="pd-info">
+            <div class="pd-tag">&#9670; Anime Collection</div>
+            <h1 class="pd-title" id="prodTitle">kakashi hatake</h1>
+
+            <div class="pd-rating">
+                <div class="pd-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+                <div class="pd-rating-text">4.2 &nbsp;·&nbsp; 128 reviews</div>
+            </div>
+
+            <div class="pd-price-row">
+                <div class="pd-price" id="prodPrice">&#8377;799</div>
+                <div class="pd-price-original">&#8377;1,199</div>
+                <div class="pd-badge">33% OFF</div>
+            </div>
+
+            <p class="pd-desc" id="prodDesc">
+                Premium quality anime-print tshirt crafted from 100% ring-spun cotton.
+                Breathable, pre-shrunk fabric with a relaxed fit. Screen-printed graphic
+                that holds its color wash after wash.
+            </p>
+
+            <!-- Size selector -->
+            <span class="pd-section-label">Select Size</span>
+            <div class="pd-sizes" id="sizeSelector">
+                <button class="pd-size-btn" type="button" data-size="XS" aria-pressed="false">XS</button>
+                <button class="pd-size-btn" type="button" data-size="S" aria-pressed="false">S</button>
+                <button class="pd-size-btn" type="button" data-size="M" aria-pressed="false">M</button>
+                <button class="pd-size-btn" type="button" data-size="L" aria-pressed="false">L</button>
+                <button class="pd-size-btn" type="button" data-size="XL" aria-pressed="false">XL</button>
+                <button class="pd-size-btn" type="button" data-size="XXL" aria-pressed="false">XXL</button>
+            </div>
+
+            <!-- Qty + buttons -->
+            <div class="pd-action-row">
+                <div class="pd-qty">
+                    <button id="qtyDec" type="button" aria-label="Decrease quantity">&#8722;</button>
+                    <label class="sr-only" for="qtyInput">Quantity</label><input type="number" id="qtyInput" value="1" min="1" max="10" readonly>
+                    <button id="qtyInc" type="button" aria-label="Increase quantity">&#43;</button>
+                </div>
+                <button class="pd-add-btn add-to-cart-btn"
+                    id="addToCartBtn"
+                    data-id="5"
+                    data-name="kakashi hatake"
+                    data-price="799"
+                    data-img="./images/products/product-5.webp">
+                    Add to Cart
+                </button>
+                <button class="pd-wishlist-btn" type="button" title="Wishlist" aria-label="Save to wishlist">&#9825;</button>
+            </div>
+
+            <!-- Shipping strip -->
+            <div class="pd-meta-strip">
+                <div class="pd-meta-item">
+                    <span class="pd-meta-icon">&#128666;</span>
+                    <div class="pd-meta-text">
+                        <strong>Free Shipping</strong>
+                        On orders over &#8377;999
+                    </div>
+                </div>
+                <div class="pd-meta-item">
+                    <span class="pd-meta-icon">&#8635;</span>
+                    <div class="pd-meta-text">
+                        <strong>Easy Returns</strong>
+                        7-day return policy
+                    </div>
+                </div>
+                <div class="pd-meta-item">
+                    <span class="pd-meta-icon">&#128274;</span>
+                    <div class="pd-meta-text">
+                        <strong>Secure Payment</strong>
+                        100% protected
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accordion -->
+            <div class="pd-accordion">
+                <div class="pd-accordion-item">
+                    <button class="pd-accordion-header" data-target="acc1" aria-expanded="false" aria-controls="acc1">
+                        Product Details
+                        <span class="acc-icon">&#43;</span>
+                    </button>
+                    <div class="pd-accordion-body" id="acc1">
+                        Material: 100% ring-spun cotton &nbsp;·&nbsp; 180 GSM<br>
+                        Pre-shrunk &amp; machine washable<br>
+                        Screen-printed graphic — does not crack or fade<br>
+                        Relaxed unisex fit
+                    </div>
+                </div>
+                <div class="pd-accordion-item">
+                    <button class="pd-accordion-header" data-target="acc2" aria-expanded="false" aria-controls="acc2">
+                        Size Guide
+                        <span class="acc-icon">&#43;</span>
+                    </button>
+                    <div class="pd-accordion-body" id="acc2">
+                        XS: Chest 34–36" &nbsp;|&nbsp; S: 36–38" &nbsp;|&nbsp; M: 38–40"<br>
+                        L: 40–42" &nbsp;|&nbsp; XL: 42–44" &nbsp;|&nbsp; XXL: 44–46"<br>
+                        When in doubt, size up for a relaxed fit.
+                    </div>
+                </div>
+                <div class="pd-accordion-item">
+                    <button class="pd-accordion-header" data-target="acc3" aria-expanded="false" aria-controls="acc3">
+                        Shipping &amp; Returns
+                        <span class="acc-icon">&#43;</span>
+                    </button>
+                    <div class="pd-accordion-body" id="acc3">
+                        Standard delivery: 5–7 business days<br>
+                        Express delivery: 2–3 business days<br>
+                        Free returns within 7 days of delivery.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="pd-related">
+        <div class="pd-related-header">
+            <h2>You May Also Like</h2>
+            <div class="pd-related-line"></div>
+            <a href="./products.html" class="related-link">View All &#8594;</a>
+        </div>
+        <div class="pd-related-grid">
+            <a class="pd-rel-card" href="./product_details.html?id=3">
+                <div class="pd-rel-card-img">
+                    <img src="./images/products/product-3.webp" alt="vegeta">
+                </div>
+                <div class="pd-rel-card-info">
+                    <div class="pd-rel-card-name">vegeta ultra ego</div>
+                    <div class="pd-rel-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="pd-rel-card" href="./product_details.html?id=1">
+                <div class="pd-rel-card-img">
+                    <img src="./images/products/product-1.webp" alt="satoru gojo">
+                </div>
+                <div class="pd-rel-card-info">
+                    <div class="pd-rel-card-name">satoru gojo</div>
+                    <div class="pd-rel-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="pd-rel-card" href="./product_details.html?id=11">
+                <div class="pd-rel-card-img">
+                    <img src="./images/products/product-11.webp" alt="meliodas">
+                </div>
+                <div class="pd-rel-card-info">
+                    <div class="pd-rel-card-name">meliodas</div>
+                    <div class="pd-rel-card-price">&#8377;799</div>
+                </div>
+            </a>
+            <a class="pd-rel-card" href="./product_details.html?id=10">
+                <div class="pd-rel-card-img">
+                    <img src="./images/products/product-10.webp" alt="itachi uchiha">
+                </div>
+                <div class="pd-rel-card-info">
+                    <div class="pd-rel-card-name">itachi uchiha</div>
+                    <div class="pd-rel-card-price">&#8377;799</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    </main>
+
+    <!-- Footer -->
+    <div class="footer" id="footer">
+        <div class="container">
+            <div class="child">
+                <div class="footerChild1">
+                    <img src="images/header/complogo.png" alt="Company logo">
+                    <h4>Mail us at: <a href="mailto:litupclothing07@gmail.com">litupclothing07@gmail.com</a></h4>
+                </div>
+                <div class="footerChild2">
+                    <h3>Help</h3>
+                    <ul>
+                        <li><a href="#">Payments</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">FAQ Topics</a></li>
+                    </ul>
+                </div>
+                <div class="footerChild2">
+                    <h3>Our Socials</h3>
+                    <ul>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+                <div class="footerChild2">
+                    <h3>Registered Office</h3>
+                    <ul>
+                        <li>37/50 manthoppu second street,</li>
+                        <li>karumandapam,</li>
+                        <li>trichy, 620001.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="belowfooter">
+                &copy; lit-up Associates, 2026<br>
+                lit-up, All rights reserved.
+            </div>
+        </div>
+    </div>
+
+    <script src="./src/js/script.js"></script>
+        <script>
+        const PRODUCT_DETAILS = {
+            1: { description: 'A premium heavyweight cotton tee featuring Satoru Gojo artwork and a relaxed streetwear fit.' },
+            2: { description: 'Soft ring-spun cotton with a bold Monkey D. Luffy graphic made for everyday wear.' },
+            3: { description: 'A washed black tee with Vegeta Ultra Ego artwork, clean stitch detail, and breathable fabric.' },
+            4: { description: 'Naruto-inspired everyday tee with a durable screen print and a comfortable regular fit.' },
+            5: { description: 'Minimal Kakashi design on premium cotton with a smooth hand feel and easy layering fit.' },
+            6: { description: 'Gojo Satoru fan-favorite print on pre-shrunk cotton that keeps its shape wash after wash.' },
+            7: { description: 'Kakarot graphic tee cut from breathable cotton jersey for a light and comfortable feel.' },
+            8: { description: 'Classic Son Goku artwork on a versatile unisex silhouette designed for all-day comfort.' },
+            9: { description: 'Master Roshi themed tee with soft-touch print detail and a relaxed casual fit.' },
+            10: { description: 'Itachi Uchiha artwork paired with a structured collar and durable midweight cotton.' },
+            11: { description: 'Meliodas streetwear tee with a smooth finish, reinforced seams, and easy everyday styling.' },
+            12: { description: 'Vegeta graphic tee in premium cotton with a crisp print and dependable regular fit.' },
+            13: { description: 'Sukuna exclusive drop tee with a striking front print and soft pre-shrunk fabric.' },
+            14: { description: 'Zenitsu graphic tee built from breathable cotton and finished with a vivid long-lasting print.' },
+            15: { description: 'Sung Jin Woo design on heavyweight cotton for a premium drape and standout look.' },
+            16: { description: 'Black edition Gojo tee with clean contrast artwork and a relaxed oversized-inspired fit.' }
+        };
+
+        (function loadProduct() {
+            window.__reloadProductDetail = loadProduct;
+            const catalog = window.LITUP_PRODUCTS || {};
+            const params = new URLSearchParams(window.location.search);
+            const id = parseInt(params.get('id'), 10) || 5;
+            const product = catalog[id] || catalog[5];
+            if (!product) return;
+
+            const detail = PRODUCT_DETAILS[id] || PRODUCT_DETAILS[5];
+            const productImage = document.getElementById('prodImg');
+            const title = document.getElementById('prodTitle');
+            const breadcrumb = document.getElementById('breadcrumbName');
+            const price = document.getElementById('prodPrice');
+            const desc = document.getElementById('prodDesc');
+            const btn = document.getElementById('addToCartBtn');
+
+            productImage.src = product.img;
+            productImage.alt = product.name;
+            title.textContent = product.name;
+            breadcrumb.textContent = product.name;
+            price.textContent = '\u20B9' + product.price.toLocaleString();
+            desc.textContent = detail.description;
+
+            btn.dataset.id = product.id;
+            btn.dataset.name = product.name;
+            btn.dataset.price = product.price;
+            btn.dataset.img = product.img;
+
+            document.querySelectorAll('.pd-thumb img').forEach((thumbImg, index) => {
+              thumbImg.src = product.img;
+              thumbImg.alt = product.name + ' view ' + (index + 1);
+            });
+        })();
+
+        document.querySelectorAll('.pd-thumb').forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                document.querySelectorAll('.pd-thumb').forEach(item => item.classList.remove('active'));
+                thumb.classList.add('active');
+                document.getElementById('prodImg').src = thumb.querySelector('img').src;
+            });
+        });
+
+        let selectedSize = '';
+        document.querySelectorAll('.pd-size-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.pd-size-btn').forEach(item => item.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedSize = btn.dataset.size;
+            });
+        });
+
+        const qtyInput = document.getElementById('qtyInput');
+        document.getElementById('qtyDec').addEventListener('click', () => {
+            if (parseInt(qtyInput.value, 10) > 1) qtyInput.value = parseInt(qtyInput.value, 10) - 1;
+        });
+        document.getElementById('qtyInc').addEventListener('click', () => {
+            if (parseInt(qtyInput.value, 10) < 10) qtyInput.value = parseInt(qtyInput.value, 10) + 1;
+        });
+
+        document.getElementById('addToCartBtn').addEventListener('click', async () => {
+            if (!selectedSize) {
+                showToast('Please select a size first.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('addToCartBtn');
+            await addToCart(
+              btn.dataset.id,
+              btn.dataset.name,
+              parseInt(btn.dataset.price, 10),
+              btn.dataset.img,
+              selectedSize,
+              parseInt(qtyInput.value, 10)
+            );
+        });
+
+        document.querySelectorAll('.pd-accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const bodyId = header.dataset.target;
+                const body = document.getElementById(bodyId);
+                const isOpen = body.classList.contains('open');
+
+                document.querySelectorAll('.pd-accordion-body').forEach(item => item.classList.remove('open'));
+                document.querySelectorAll('.pd-accordion-header').forEach(item => item.classList.remove('open'));
+
+                if (!isOpen) {
+                    body.classList.add('open');
+                    header.classList.add('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
